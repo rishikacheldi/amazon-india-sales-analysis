@@ -1,26 +1,130 @@
 
+-- =========================================
+-- AMAZON INDIA SALES ANALYSIS
+-- DAX MEASURES
+-- Table assumed: Sales
+-- =========================================
+
+-- 1. Total Sales
 Total Sales =
-    SUM('Sales'[Amount])
+SUM('Sales'[Total_Sales_INR])
 
+
+-- 2. Total Profit
 Total Profit =
-    SUM('Sales'[Profit_INR])
+SUM('Sales'[Profit_INR])
 
+
+-- 3. Profit Margin
 Profit Margin % =
-    DIVIDE(
-        [Total Profit],
-        [Total Sales],
-        0
-    )
+DIVIDE(
+    [Total Profit],
+    [Total Sales],
+    0
+)
 
+
+-- 4. Total Orders
 Total Orders =
-    DISTINCTCOUNT('Sales'[Order ID])
+DISTINCTCOUNT('Sales'[Order_ID])
 
+
+-- 5. Total Quantity
 Total Quantity =
-    SUM('Sales'[Qty])
+SUM('Sales'[Quantity])
 
+
+-- 6. Average Order Value
 Average Order Value =
-    DIVIDE(
+DIVIDE(
+    [Total Sales],
+    [Total Orders],
+    0
+)
+
+
+-- 7. Delivered Orders
+Delivered Orders =
+CALCULATE(
+    [Total Orders],
+    'Sales'[Order_Status] = "Delivered"
+)
+
+
+-- 8. Shipped Orders
+Shipped Orders =
+CALCULATE(
+    [Total Orders],
+    'Sales'[Order_Status] = "Shipped"
+)
+
+
+-- 9. Cancelled Orders
+Cancelled Orders =
+CALCULATE(
+    [Total Orders],
+    'Sales'[Order_Status] = "Cancelled"
+)
+
+
+-- 10. Returned Orders
+Returned Orders =
+CALCULATE(
+    [Total Orders],
+    'Sales'[Order_Status] = "Returned"
+)
+
+
+-- 11. Cancellation Rate
+Cancellation Rate % =
+DIVIDE(
+    [Cancelled Orders],
+    [Total Orders],
+    0
+)
+
+
+-- 12. Return Rate
+Return Rate % =
+DIVIDE(
+    [Returned Orders],
+    [Total Orders],
+    0
+)
+
+
+-- 13. Delivered Order Rate
+Delivered Order Rate % =
+DIVIDE(
+    [Delivered Orders],
+    [Total Orders],
+    0
+)
+
+
+-- 14. Sales from UPI
+UPI Sales =
+CALCULATE(
+    [Total Sales],
+    'Sales'[Payment_Method] = "UPI"
+)
+
+
+-- 15. Sales from Amazon FBA
+FBA Sales =
+CALCULATE(
+    [Total Sales],
+    'Sales'[Fulfillment] = "Amazon (FBA)"
+)
+
+
+-- 16. Sales Contribution %
+Sales Contribution % =
+DIVIDE(
+    [Total Sales],
+    CALCULATE(
         [Total Sales],
-        [Total Orders],
-        0
-    )
+        REMOVEFILTERS('Sales'[Category])
+    ),
+    0
+)
