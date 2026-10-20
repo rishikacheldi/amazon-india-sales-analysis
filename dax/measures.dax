@@ -1,0 +1,26 @@
+
+Total Sales =
+    SUM('Sales'[Amount])
+
+Total Profit =
+    SUM('Sales'[Profit_INR])
+
+Profit Margin % =
+    DIVIDE(
+        [Total Profit],
+        [Total Sales],
+        0
+    )
+
+Total Orders =
+    DISTINCTCOUNT('Sales'[Order ID])
+
+Total Quantity =
+    SUM('Sales'[Qty])
+
+Average Order Value =
+    DIVIDE(
+        [Total Sales],
+        [Total Orders],
+        0
+    )
